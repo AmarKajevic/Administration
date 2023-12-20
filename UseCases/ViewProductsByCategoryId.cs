@@ -7,19 +7,20 @@ using System.Threading.Tasks;
 using UseCases.DataStorePluginInterfaces;
 using UseCases.UseCaseInterfaces;
 
-namespace UseCases.ProductUseCases
+namespace UseCases
 {
-    public class DeleteProductUseCase : IDeleteProductUseCase
+    public class ViewProductsByCategoryId : IViewProductsByCategoryId
     {
         private readonly IProductRepository _productRepository;
 
-        public DeleteProductUseCase(IProductRepository productRepository)
+        public ViewProductsByCategoryId(IProductRepository productRepository)
         {
             _productRepository = productRepository;
         }
-        public void Execute(int productId)
+
+        public IEnumerable<Product> Execute(int categoryId)
         {
-            _productRepository.DeleteProduct(productId);
+            return _productRepository.GetProductsByCategoryId(categoryId);
         }
     }
 }
