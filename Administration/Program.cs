@@ -1,7 +1,12 @@
 using Administration.Data;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;  
+using Microsoft.Extensions.DependencyInjection; 
+using Microsoft.Extensions.Hosting;
 using Plugins.DataStore.InMemory;
+using Plugins.DataStore.SQL;
 using UseCases;
 using UseCases.CategoriesUseCases;
 using UseCases.DataStorePluginInterfaces;
@@ -11,6 +16,8 @@ using UseCases.UseCaseInterfaces;
 var builder = WebApplication.CreateBuilder(args);
 
 
+
+
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
@@ -18,6 +25,14 @@ builder.Services.AddSingleton<WeatherForecastService>();
 builder.Services.AddScoped<ICategoryRepository, CategoryInMemoryRepository>();
 builder.Services.AddScoped<IProductRepository, ProductInMemoryRepository>();
 builder.Services.AddScoped<ITransactionRepository, TransactionInMemoryRepository>();
+
+builder.Configuration.AddJsonFile("appsettings.json");
+
+
+builder.Services.AddDbContext<MarketContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")) ;
+});
 
 
 builder.Services.AddTransient<IViewCategoriesUseCase, ViewCategoriesUseCase>();
