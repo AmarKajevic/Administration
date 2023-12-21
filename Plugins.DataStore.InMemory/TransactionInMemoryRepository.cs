@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CoreBusiness;
 using UseCases.DataStorePluginInterfaces;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Plugins.DataStore.InMemory
 {
@@ -67,6 +68,16 @@ namespace Plugins.DataStore.InMemory
             });
         }
 
+        public IEnumerable<Transaction> Search(string cashierName, DateTime startdate, DateTime endDate)
+        {
+            if (string.IsNullOrEmpty(cashierName))
+                return transactions.Where(x => x.TimeStamp >= startdate.Date && x.TimeStamp <= endDate.Date.AddDays(1).Date);
+            else
+            {
+                return transactions.Where(x => string.Equals(x.CashierName, cashierName, StringComparison.OrdinalIgnoreCase) &&
+               x.TimeStamp >= startdate.Date && x.TimeStamp <= endDate.Date.AddDays(1).Date);
+            }
 
+        }
     }
 }
