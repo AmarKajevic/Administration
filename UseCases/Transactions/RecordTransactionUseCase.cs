@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using UseCases.DataStorePluginInterfaces;
 using UseCases.UseCaseInterfaces;
 
-namespace UseCases
+namespace UseCases.Transactions
 {
     public class RecordTransactionUseCase : IRecordTransactionUseCase
     {
@@ -22,7 +22,7 @@ namespace UseCases
         {
 
             var product = _getProductByIdUseCase.Execute(productId);
-            _transactionRepository.Save(cashierName, productId, product.Name, product.Price.Value,product.Quantity.Value, qty);
+            _transactionRepository.Save(cashierName, productId, product.Name, product.Price.Value, product.Quantity.Value, qty);
         }
     }
 }

@@ -1,4 +1,6 @@
 ﻿@page "/products"
+@attribute [Authorize(Policy = "AdminOnly")]
+
 @inject UseCases.UseCaseInterfaces.IViewProductsUseCase ViewProductUseCase
 @inject UseCases.UseCaseInterfaces.IGetCategoryByIdUseCase GetCategoryByIdUseCase
 @inject UseCases.UseCaseInterfaces.IDeleteProductUseCase DeleteProductUseCase

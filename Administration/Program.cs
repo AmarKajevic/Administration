@@ -2,16 +2,19 @@ using Administration.Data;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;  
-using Microsoft.Extensions.DependencyInjection; 
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Plugins.DataStore.InMemory;
 using Plugins.DataStore.SQL;
-using UseCases;
 using UseCases.CategoriesUseCases;
 using UseCases.DataStorePluginInterfaces;
 using UseCases.ProductUseCases;
 using UseCases.UseCaseInterfaces;
+using Microsoft.AspNetCore.Identity;
+using System.Configuration;
+using Microsoft.Extensions.Options;
+using UseCases.Transactions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,9 +25,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
-builder.Services.AddScoped<ICategoryRepository, CategoryInMemoryRepository>();
-builder.Services.AddScoped<IProductRepository, ProductInMemoryRepository>();
-builder.Services.AddScoped<ITransactionRepository, TransactionInMemoryRepository>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
+
+
 
 builder.Configuration.AddJsonFile("appsettings.json");
 
@@ -32,6 +37,17 @@ builder.Configuration.AddJsonFile("appsettings.json");
 builder.Services.AddDbContext<MarketContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")) ;
+});
+builder.Services.AddDbContext<AccountContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+});
+
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<AccountContext>();
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminOnly", p => p.RequireClaim("Position", "Admin"));
+    options.AddPolicy("CashierOnly", p => p.RequireClaim("Position", "Cashier"));
 });
 
 
@@ -67,6 +83,11 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseAuthentication();
+app.UseAuthorization();
+
+app.MapRazorPages();
+
 
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
