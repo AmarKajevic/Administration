@@ -40,7 +40,7 @@ namespace Plugins.DataStore.InMemory
             
         }
 
-        public void Save(string cashierName, int productId, string productName, double price,int beforeQty, int soldQty)
+        public void Save(string cashierName, int productId, string productName, double price,int beforeQty, int soldQty,int points, int personalPoints, int generalPoints)
         {
             int transactionId = 0;
             if (transactions != null && transactions.Count > 0)
@@ -62,6 +62,9 @@ namespace Plugins.DataStore.InMemory
                 TimeStamp = DateTime.Now,
                 BeforeQty = beforeQty,
                 SoldQty = soldQty,
+                PersonalPoints = personalPoints,
+                GeneralPoints = generalPoints,
+                Points = points,
                 CashierName = cashierName
                 
 

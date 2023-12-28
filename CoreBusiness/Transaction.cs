@@ -14,6 +14,9 @@ namespace CoreBusiness
         public string ProductName { get; set; }
         public double Price { get; set; }
         public int BeforeQty { get; set; }
+        public int Points { get; set; }
+        public int PersonalPoints { get; set; }
+        public int GeneralPoints { get; set; }
         public int SoldQty { get; set; }
         public string CashierName { get; set; }
     }

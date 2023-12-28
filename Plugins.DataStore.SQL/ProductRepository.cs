@@ -50,8 +50,9 @@ namespace Plugins.DataStore.SQL
         {
             var prod = _db.Products.Find(product.ProductId);
             prod.CategoryId = product.CategoryId;
-            prod.Name = product.Name;
+            prod.Name = product.Name;  
             prod.Price= product.Price;
+            prod.Points = product.Points;
             prod.Quantity= product.Quantity;
             _db.SaveChanges();
         }

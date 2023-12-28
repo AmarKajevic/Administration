@@ -24,6 +24,32 @@
             <label for="qty">Quantity</label>
             <InputNumber id="qty" @bind-Value="@productToSell.Quantity" class="form-control"></InputNumber>
         </div>
+        <div class="form-group">
+            <label for="qty">Quantity</label>
+            <InputNumber id="qty" @bind-Value="@productToSell.Quantity" class="form-control"></InputNumber>
+        </div>
+        <div class="form-group">
+            <label for="qty">Quantity</label>
+            <InputNumber id="qty" @bind-Value="@productToSell.Quantity" class="form-control"></InputNumber>
+        </div>
+        <div class="form-group">
+            <label for="qty">Quantity</label>
+            <InputNumber id="qty" @bind-Value="@productToSell.Quantity" class="form-control"></InputNumber>
+        </div>
+        <div class="form-group">
+            <label for="qty">Quantity</label>
+            <InputNumber id="qty" @bind-Value="@productToSell.Quantity" class="form-control"></InputNumber>
+        </div>
+        <div class="form-group">
+            <label for="qty">Quantity</label>
+            <InputNumber id="qty" @bind-Value="@productToSell.Quantity" class="form-control"></InputNumber>
+        </div>
+        <div class="form-group">
+            <label for="qty">Quantity</label>
+            <InputNumber id="qty" @bind-Value="@productToSell.Quantity" class="form-control"></InputNumber>
+        </div>
+        
+
         <br/>
         <button type="submit" class="btn btn-primary">Sell</button>
 
@@ -59,6 +85,7 @@
                 Name = SelectedProduct.Name,
                 CategoryId = SelectedProduct.CategoryId,
                 Price = SelectedProduct.Price,
+                Points = SelectedProduct.Points,
                 Quantity = 0
 
             };
@@ -87,7 +114,7 @@
 
             OnProductSold.InvokeAsync(productToSell);
             errorMessage = string.Empty;
-            SellProductUseCase.Execute(CashierName, productToSell.ProductId, productToSell.Quantity.Value);
+            SellProductUseCase.Execute(CashierName, productToSell.ProductId, productToSell.Quantity.Value, product.Points.Value);
         }
       
         else

@@ -34,7 +34,7 @@ namespace Plugins.DataStore.SQL
             }
         }
 
-        public void Save(string cashierName, int productId, string productName, double price, int beforeQty, int Soldqty)
+        public void Save(string cashierName, int productId, string productName, double price, int beforeQty, int Soldqty,int points, int PersonalPoints, int GeneralPoints)
         {
             var transaction = new Transaction
             {
@@ -44,6 +44,9 @@ namespace Plugins.DataStore.SQL
                 Price = price,
                 BeforeQty = beforeQty,
                 SoldQty = Soldqty,
+                Points = points,
+                PersonalPoints = PersonalPoints,
+                GeneralPoints = GeneralPoints,
                 CashierName = cashierName
             };
 

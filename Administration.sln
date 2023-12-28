@@ -9,9 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UseCases", "UseCases\UseCas
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreBusiness", "CoreBusiness\CoreBusiness.csproj", "{B1EA7B90-7953-4986-9A40-575359B20B26}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Plugins.DataStore.InMemory", "Plugins.DataStore.InMemory\Plugins.DataStore.InMemory.csproj", "{80B5789A-B729-4D92-BD9E-2F14DE5AC01A}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugins.DataStore.SQL", "Plugins.DataStore.SQL\Plugins.DataStore.SQL.csproj", "{D0830DC9-3261-4FA1-8097-DF23F41E9503}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Plugins.DataStore.SQL", "Plugins.DataStore.SQL\Plugins.DataStore.SQL.csproj", "{D0830DC9-3261-4FA1-8097-DF23F41E9503}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,10 +29,6 @@ Global
 		{B1EA7B90-7953-4986-9A40-575359B20B26}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B1EA7B90-7953-4986-9A40-575359B20B26}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B1EA7B90-7953-4986-9A40-575359B20B26}.Release|Any CPU.Build.0 = Release|Any CPU
-		{80B5789A-B729-4D92-BD9E-2F14DE5AC01A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{80B5789A-B729-4D92-BD9E-2F14DE5AC01A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{80B5789A-B729-4D92-BD9E-2F14DE5AC01A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{80B5789A-B729-4D92-BD9E-2F14DE5AC01A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D0830DC9-3261-4FA1-8097-DF23F41E9503}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D0830DC9-3261-4FA1-8097-DF23F41E9503}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D0830DC9-3261-4FA1-8097-DF23F41E9503}.Release|Any CPU.ActiveCfg = Release|Any CPU

@@ -18,11 +18,11 @@ namespace UseCases.Transactions
             _transactionRepository = transactionRepository;
             _getProductByIdUseCase = getProductByIdUseCase;
         }
-        public void Execute(string cashierName, int productId, int qty)
+        public void Execute(string cashierName, int productId, int qty, int pts)
         {
 
             var product = _getProductByIdUseCase.Execute(productId);
-            _transactionRepository.Save(cashierName, productId, product.Name, product.Price.Value, product.Quantity.Value, qty);
+            _transactionRepository.Save(cashierName, productId, product.Name, product.Price.Value, product.Quantity.Value, qty, product.Points.Value,product.Points.Value, pts);
         }
     }
 }
