@@ -33,8 +33,18 @@ namespace Plugins.DataStore.SQL
                 x.TimeStamp.Date == date.Date);
             }
         }
+        public void DeleteTransaction(int transactionId)
+        {
+            var transaction = _db.Transactions.Find(transactionId);
+            if (transaction == null) return;
+            _db.Transactions.Remove(transaction);
+            _db.SaveChanges();
+        }
 
-        public void Save(string cashierName, int productId, string productName, double price, int beforeQty, int Soldqty,int points, int PersonalPoints, int GeneralPoints)
+        public void Save(string cashierName, int productId, string productName,
+            double price, int beforeQty, int soldqty,int points, 
+            int PersonalPoints, int GeneralPoints, string address, string city,
+            string firstName, string lastName, string postalCode, string phone)
         {
             var transaction = new Transaction
             {
@@ -43,8 +53,14 @@ namespace Plugins.DataStore.SQL
                 TimeStamp = DateTime.Now,
                 Price = price,
                 BeforeQty = beforeQty,
-                SoldQty = Soldqty,
+                SoldQty = soldqty,
                 Points = points,
+                Address = address,
+                City= city,
+                FirstName= firstName,
+                LastName= lastName,
+                PostalCode= postalCode, 
+                Phone= phone,
                 PersonalPoints = PersonalPoints,
                 GeneralPoints = GeneralPoints,
                 CashierName = cashierName

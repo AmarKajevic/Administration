@@ -25,5 +25,6 @@ namespace UseCases.Transactions
         {
             return _transactionRepository.Search(cashierName, startDate, endDate);
         }
+
     }
 }

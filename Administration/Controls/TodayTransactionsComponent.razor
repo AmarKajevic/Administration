@@ -3,13 +3,14 @@
 @if (transactions != null)
 {
 
-    <table class="table">
+    <table class="table table-dark table-striped">
         <thead>
             <tr>
                 <th>Cashier Name</th>
                 <th>Product Name</th>
                 <th>Date Time</th>
                 <th>Qty Sold</th>
+                <th>Address</th>
                 <th>Personal Points</th>
                 <th>General Points</th>
                 <th>Sold Amt</th>
@@ -23,6 +24,7 @@
                     <td>@tran.ProductName</td>
                     <td>@tran.TimeStamp.ToString("MM/dd hh:mm")</td>
                     <td>@tran.SoldQty</td>
+                    <td>@tran.Address</td>
                     <td>@(tran.Points * tran.SoldQty)</td>
                     <td>@(tran.Points * tran.SoldQty)</td>
                     <td>@(string.Format("{0:c}", tran.SoldQty * tran.Price))</td>

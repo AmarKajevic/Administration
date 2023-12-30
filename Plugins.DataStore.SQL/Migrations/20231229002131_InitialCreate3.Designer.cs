@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Plugins.DataStore.SQL;
 
@@ -11,9 +12,11 @@ using Plugins.DataStore.SQL;
 namespace Plugins.DataStore.SQL.Migrations
 {
     [DbContext(typeof(MarketContext))]
-    partial class MarketContextModelSnapshot : ModelSnapshot
+    [Migration("20231229002131_InitialCreate3")]
+    partial class InitialCreate3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -72,6 +75,7 @@ namespace Plugins.DataStore.SQL.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductId"));
 
                     b.Property<string>("Address")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("CategoryId")
@@ -79,27 +83,30 @@ namespace Plugins.DataStore.SQL.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("City")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirstName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Phone")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Phone")
+                        .HasColumnType("int");
 
                     b.Property<int?>("Points")
                         .IsRequired()
                         .HasColumnType("int");
 
-                    b.Property<string>("PostalCode")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("PostalCode")
+                        .HasColumnType("int");
 
                     b.Property<double?>("Price")
                         .IsRequired()
@@ -119,36 +126,60 @@ namespace Plugins.DataStore.SQL.Migrations
                         new
                         {
                             ProductId = 1,
+                            Address = " ",
                             CategoryId = 1,
+                            City = "",
+                            FirstName = "",
+                            LastName = "",
                             Name = "Iced Tea",
+                            Phone = 646432004,
                             Points = 20,
+                            PostalCode = 31300,
                             Price = 1.99,
                             Quantity = 100
                         },
                         new
                         {
                             ProductId = 2,
+                            Address = "",
                             CategoryId = 1,
+                            City = "",
+                            FirstName = "",
+                            LastName = "",
                             Name = "Canada Dry",
+                            Phone = 646432004,
                             Points = 30,
+                            PostalCode = 31300,
                             Price = 2.9900000000000002,
                             Quantity = 200
                         },
                         new
                         {
                             ProductId = 3,
+                            Address = " ",
                             CategoryId = 3,
+                            City = "",
+                            FirstName = "",
+                            LastName = "",
                             Name = "Steak",
+                            Phone = 646432004,
                             Points = 30,
+                            PostalCode = 31300,
                             Price = 10.99,
                             Quantity = 100
                         },
                         new
                         {
                             ProductId = 4,
+                            Address = " ",
                             CategoryId = 2,
+                            City = "",
+                            FirstName = "",
+                            LastName = "",
                             Name = "White Bread",
+                            Phone = 646432004,
                             Points = 20,
+                            PostalCode = 31300,
                             Price = 0.98999999999999999,
                             Quantity = 300
                         });
@@ -163,6 +194,7 @@ namespace Plugins.DataStore.SQL.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TransactionId"));
 
                     b.Property<string>("Address")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("BeforeQty")
@@ -173,28 +205,31 @@ namespace Plugins.DataStore.SQL.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("City")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirstName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("GeneralPoints")
                         .HasColumnType("int");
 
                     b.Property<string>("LastName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("PersonalPoints")
                         .HasColumnType("int");
 
-                    b.Property<string>("Phone")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Phone")
+                        .HasColumnType("int");
 
                     b.Property<int>("Points")
                         .HasColumnType("int");
 
-                    b.Property<string>("PostalCode")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("PostalCode")
+                        .HasColumnType("int");
 
                     b.Property<double>("Price")
                         .HasColumnType("float");

@@ -54,6 +54,13 @@ namespace Plugins.DataStore.SQL
             prod.Price= product.Price;
             prod.Points = product.Points;
             prod.Quantity= product.Quantity;
+            prod.Address = product.Address;
+            prod.City = product.City;
+            prod.FirstName = product.FirstName;
+            prod.LastName = product.LastName;
+            prod.PostalCode = product.PostalCode;
+            prod.Phone = product.Phone;
+            
             _db.SaveChanges();
         }
         

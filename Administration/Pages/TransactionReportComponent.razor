@@ -3,10 +3,11 @@
 
 @inject IJSRuntime JSRuntime
 @inject UseCases.UseCaseInterfaces.IGetTransactionsUseCase GetTransactionsUseCase
+@inject UseCases.DataStorePluginInterfaces.ITransactionRepository TransactionRepository
 
 <div class="row">
     <div class="col-2">
-        <label for="cashier">Cashier Name</label>
+        <label for="cashier">Username</label>
         <input type="text" id="cashier" class="form-control" @bind-value="cashierName"/>
     </div>
     <div class="col-3">
@@ -31,17 +32,24 @@
 @if (transactions != null)
 {
     <div id="printarea">
-    <table class="table">
+        <table class="table table-dark table-striped">
         <thead>
             <tr>
                 <th>Date Time</th>
-                <th>Cashier Name</th>
-                <th>Product Name</th>              
-                <th>Qty Before</th>
+                <th>UserName</th>
+                <th>Product Name</th>    
+                <th>First name</th>
+                <th>Last name</th>
+                <th>Address</th>
+                <th>City</th>
+                <th>Postal code</th>
+                <th>Phone number</th>
                 <th>Qty Sold</th>
-                <th>Qty After</th>
+                <th>Personal Points</th>
+                <th>General Points</th>
                 <th>Price</th>
                 <th>Sold Amt</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -51,26 +59,51 @@
                     <td>@tran.TimeStamp.ToString("yyyy-MM-dd hh:mm")</td>
                     <td>@tran.CashierName</td>
                     <td>@tran.ProductName</td>
-
-                    <td>@tran.BeforeQty</td>
+                    <td>@tran.FirstName</td>
+                    <td>@tran.LastName</td>
+                    <td>@tran.Address</td>
+                    <td>@tran.City</td>
+                    <td>@tran.PostalCode</td>
+                    <td>@tran.Phone</td>
                     <td>@tran.SoldQty</td>
-                    <td>@(tran.BeforeQty - tran.SoldQty)</td>
+                    <td>@tran.PersonalPoints</td>
+                    <td>@tran.GeneralPoints</td>
                     <td style="text-align:right">@(string.Format("{0:c}", tran.Price))</td>
                     <td style="text-align:right">@(string.Format("{0:c}", tran.SoldQty * tran.Price))</td>
+                        <td>  <button type="button" class="btn btn-link" @onclick="@(() => DeleteTransaction(@tran.TransactionId))">Delete</button></td>
 
                 </tr>
             }
             <tr>
-                <td colspan="6">&nbsp;</td>
-                <td style="text-align:right">
-                <b> Grand Total:</b>
-                </td>
-                <td style="text-align:right">
-                    <b>
-                           @(string.Format("{0:c}", @transactions.Sum(x => x.Price * x.SoldQty)))
-                    </b>
-                    
-               </td>
+                <td colspan="8">&nbsp;</td>
+               
+                    <td style="text-align:right">
+                        <b> total Personal Points:</b>
+                    </td>
+                    <td style="text-align:right">
+                        <b>
+                            @( @transactions.Sum(x => x.PersonalPoints ))
+                        </b>
+
+                    </td>
+                    <td style="text-align:right">
+                        <b> Total General Points:</b>
+                    </td>
+                    <td style="text-align:right">
+                        <b>
+                            @( @transactions.Sum(x => x.GeneralPoints + x.PersonalPoints))
+                        </b>
+
+                    </td>
+                    <td style="text-align:right">
+                        <b> Grand Total:</b>
+                    </td>
+                    <td style="text-align:right">
+                        <b>
+                            @(string.Format("{0:c}", @transactions.Sum(x => x.Price * x.SoldQty)))
+                        </b>
+
+                    </td>
 
             </tr>
         </tbody>
@@ -98,6 +131,7 @@
     private void LoadTransactions()
     {
         transactions = GetTransactionsUseCase.Execute(cashierName, startDate, endDate);
+    
 
     }
     private void PrintReport()
@@ -105,5 +139,14 @@
         JSRuntime.InvokeVoidAsync("print");
 
     }
+    private void DeleteTransaction(int transactionId)
+    {
+        
+        TransactionRepository.DeleteTransaction(transactionId);
+
+        
+        LoadTransactions();
+    }
+
 
 }
