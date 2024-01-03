@@ -25,14 +25,45 @@ namespace Plugins.DataStore.SQL
         public IEnumerable<Transaction> GetByDay(string cashierName, DateTime date)
         {
             if (string.IsNullOrEmpty(cashierName))
+            {
+                
+                if (date.Day == 1)
+                {
+                    DeleteTransactionsOnFirstDayOfMonth();
+                }
+
                 return _db.Transactions.Where(x => x.TimeStamp.Date == date.Date);
+            }
             else
             {
+                
+                if (date.Day == 1)
+                {
+                    DeleteTransactionsOnFirstDayOfMonth();
+                }
+
                 return _db.Transactions.Where(x =>
-                EF.Functions.Like(x.CashierName, $"%{cashierName}%") &&
-                x.TimeStamp.Date == date.Date);
+                    EF.Functions.Like(x.CashierName, $"%{cashierName}%") &&
+                    x.TimeStamp.Date == date.Date);
             }
         }
+
+        private void DeleteTransactionsOnFirstDayOfMonth()
+        {
+            
+            var currentDate = DateTime.Now;
+            var firstDayOfPreviousMonth = currentDate.AddMonths(-1).Date;
+            var lastDayOfPreviousMonth = new DateTime(currentDate.Year, currentDate.Month, 1).AddDays(-1).Date;
+
+            var transactionsToDelete = _db.Transactions
+                .Where(x => x.TimeStamp.Date >= firstDayOfPreviousMonth && x.TimeStamp.Date <= lastDayOfPreviousMonth)
+                .ToList();
+
+            _db.Transactions.RemoveRange(transactionsToDelete);
+            _db.SaveChanges();
+        }
+
+
         public void DeleteTransaction(int transactionId)
         {
             var transaction = _db.Transactions.Find(transactionId);

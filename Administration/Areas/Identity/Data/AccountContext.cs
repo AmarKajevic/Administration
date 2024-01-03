@@ -1,10 +1,11 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Administration.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Administration.Data;
 
-public class AccountContext : IdentityDbContext<IdentityUser>
+public class AccountContext : IdentityDbContext
 {
     public AccountContext(DbContextOptions<AccountContext> options)
         : base(options)

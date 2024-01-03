@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Identity;
 using System.Configuration;
 using Microsoft.Extensions.Options;
 using UseCases.Transactions;
+using Administration.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -47,7 +48,7 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("AdminOnly", p => p.RequireClaim("Position", "Admin"));
-    options.AddPolicy("CashierOnly", p => p.RequireClaim("Position", "Cashier"));
+    options.AddPolicy("CashierOnly", p => p.RequireClaim( "Position", "Cashier"));
 });
 
 

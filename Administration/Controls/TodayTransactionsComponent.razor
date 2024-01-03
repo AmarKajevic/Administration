@@ -27,10 +27,42 @@
                     <td>@tran.Address</td>
                     <td>@(tran.Points * tran.SoldQty)</td>
                     <td>@(tran.Points * tran.SoldQty)</td>
-                    <td>@(string.Format("{0:c}", tran.SoldQty * tran.Price))</td>
+                    <td>@(string.Format("€{0}", tran.SoldQty * tran.Price))</td>
 
                 </tr>
             }
+            <tr>
+                <td colspan="2">&nbsp;</td>
+
+                <td style="text-align:right">
+                    <b> total Personal Points:</b>
+                </td>
+                <td style="text-align:right">
+                    <b>
+                        @(@transactions.Sum(x => x.PersonalPoints * x.SoldQty))
+                    </b>
+
+                </td>
+                <td style="text-align:right">
+                    <b> Total General Points:</b>
+                </td>
+                <td style="text-align:right">
+                    <b>
+                        @(@transactions.Sum(x => x.GeneralPoints  + x.PersonalPoints * x.SoldQty))
+                    </b>
+
+                </td>
+                <td style="text-align:right">
+                    <b> Grand Total:</b>
+                </td>
+                <td style="text-align:right">
+                    <b>
+                        @(string.Format("€{0}", @transactions.Sum(x => x.Price * x.SoldQty)))
+                    </b>
+
+                </td>
+
+            </tr>
         </tbody>
     </table>
 }
