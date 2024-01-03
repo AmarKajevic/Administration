@@ -125,7 +125,7 @@
         base.OnInitialized();
 
         startDate = DateTime.Today;
-        endDate = DateTime.Today;
+        endDate = new DateTime(startDate.Year, startDate.Month, 1).AddMonths(1);
     }
 
     private void LoadTransactions()
