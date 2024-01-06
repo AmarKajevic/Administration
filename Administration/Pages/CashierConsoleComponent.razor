@@ -1,7 +1,16 @@
 ﻿@page "/cashier_console"
+@using Microsoft.AspNetCore.Identity;
+@using Microsoft.AspNetCore.Components.Authorization
+@using System.Security.Claims
+
 
 @attribute [Authorize(Policy = "CashierOnly")]
 @inject NavigationManager NavigationManager
+
+@inject IJSRuntime JSRuntime
+@inject AuthenticationStateProvider authenticationStateProvider
+@inject UserManager<IdentityUser> UserManager
+
 
 
 @if (!string.IsNullOrEmpty(cashierName))
@@ -24,17 +33,16 @@
 
 
 
-    <br/>
+    <br />
 
     <br />
     <div class="row">
         <div class="col-4">
             <SelectProductForSellingComponent OnProductSelected="SelectProduct"></SelectProductForSellingComponent>
-            <br/>
-            <SellProductComponent 
-            CashierName="@cashierName"
-            SelectedProduct="selectedProduct"
-            OnProductSold="SellProduct"></SellProductComponent>
+            <br />
+            <SellProductComponent CashierName="@cashierName"
+                                  SelectedProduct="selectedProduct"
+                                  OnProductSold="SellProduct"></SellProductComponent>
         </div>
         <div class="col-8">
             <TodayTransactionsComponent @ref="transactionComponent"></TodayTransactionsComponent>
@@ -45,10 +53,12 @@
 @code {
     private TodayTransactionsComponent transactionComponent;
 
+
     private Product selectedProduct;
     private string cashierName;
+    private Transaction selectedTransaction;
     [CascadingParameter]
-    private Task<AuthenticationState> _authState{ get; set; }
+    private Task<AuthenticationState> _authState { get; set; }
 
     private AuthenticationState authState;
 
@@ -70,7 +80,7 @@
         if (firstRender)
         {
             transactionComponent.LoadTransactions(cashierName);
-          
+
         }
     }
 
@@ -80,18 +90,42 @@
         selectedProduct = product;
 
     }
+    private void SelectTransaction(Transaction transaction)
+    {
+        selectedTransaction = transaction;
+    }
     private void SellProduct(Product product)
     {
         transactionComponent.LoadTransactions(cashierName);
 
     }
-    private void recommendationLink()
-    {
-        
-        string invitationLink = ($"/register/hash={authState.User.Identity.Name}");
-    
+    //private async Task recommendationLink()
+    //{
+    //    var authenticationState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+    //    var currentUserId = authenticationState.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-      
-        NavigationManager.NavigateTo(invitationLink);
+    //    //string userHash = authState.User.Identity.Name;
+    //    //string invitationLink = $"/Identity/Account/Register?hash={userHash}";
+    //    //string script = $"window.open('{invitationLink}', '_blank');";
+    //    //JSRuntime.InvokeVoidAsync("eval", script);
+    //}
+    [CascadingParameter]
+    private Task<AuthenticationState> authenticationStateTask { get; set; }
+
+    private async Task recommendationLink()
+    {
+
+        var authenticationState = await authenticationStateTask;
+        var currentUserId = authenticationState.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var uniqueIdentifier = currentUserId;
+        string invitationLink = $"/Identity/Account/Register?hash={uniqueIdentifier}";
+        string script = $"window.open('{invitationLink}', '_blank');";
+        await JSRuntime.InvokeVoidAsync("eval", script);
+
+
+        Console.WriteLine($"Trenutni korisnik: {currentUserId}");
+
     }
+
+
 }
