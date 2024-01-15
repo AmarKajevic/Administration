@@ -1,16 +1,18 @@
-﻿using Administration.Models;
+﻿
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Administration.Data;
 
-public class AccountContext : IdentityDbContext
+public class AccountContext : IdentityDbContext<ApplicationUser>
 {
     public AccountContext(DbContextOptions<AccountContext> options)
         : base(options)
     {
     }
+    public DbSet<ApplicationUser> User { get; set; }
+
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

@@ -98,6 +98,9 @@ namespace Administration.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+            
+            [Display(Name = "Recommender ID")]
+            public string RecommenderId { get; set; }
         }
 
 
@@ -107,17 +110,17 @@ namespace Administration.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
 
-        public async Task<IActionResult> OnPostAsync(string returnUrl = null)
+        public async Task<IActionResult> OnPostAsync(string returnUrl = null, string recommenderId = null)
         {
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = CreateUser();
+                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email, RecommenderId = Input.RecommenderId };
                 
 
-                await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
-                await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+                // await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
+                // await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
 
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
@@ -132,7 +135,7 @@ namespace Administration.Areas.Identity.Pages.Account
                     var callbackUrl = Url.Page(
                         "/Account/ConfirmEmail",
                         pageHandler: null,
-                        values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
+                        values: new { area = "Identity", userId = userId, code = code,  returnUrl = returnUrl },
                         protocol: Request.Scheme);
 
                     await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
@@ -157,6 +160,15 @@ namespace Administration.Areas.Identity.Pages.Account
             // If we got this far, something failed, redisplay form
             return Page();
         }
+        private ApplicationUser CreateUser(string recommenderId)
+{
+            return new ApplicationUser
+            {
+                UserName = Input.Email,
+                Email = Input.Email,
+                RecommenderId = recommenderId
+            };
+}
 
 
         private IdentityUser CreateUser()

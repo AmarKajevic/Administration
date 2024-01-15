@@ -12,7 +12,7 @@ using Plugins.DataStore.SQL;
 namespace Plugins.DataStore.SQL.Migrations
 {
     [DbContext(typeof(MarketContext))]
-    [Migration("20240113021814_Init")]
+    [Migration("20240114133833_Init")]
     partial class Init
     {
         /// <inheritdoc />
