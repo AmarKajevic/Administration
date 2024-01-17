@@ -34,5 +34,6 @@ namespace CoreBusiness
         public string? Phone { get; set; }
 
         public Category Category { get; set; }
+        public  string? UserId { get; set; }
     }
 }

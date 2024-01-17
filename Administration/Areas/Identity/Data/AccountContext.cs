@@ -5,13 +5,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Administration.Data;
 
-public class AccountContext : IdentityDbContext<ApplicationUser>
+public class AccountContext : IdentityDbContext
 {
     public AccountContext(DbContextOptions<AccountContext> options)
         : base(options)
     {
     }
-    public DbSet<ApplicationUser> User { get; set; }
+    public DbSet<ApplicationUser> Users { get; set; }
 
 
     protected override void OnModelCreating(ModelBuilder builder)

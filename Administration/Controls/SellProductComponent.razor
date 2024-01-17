@@ -94,7 +94,8 @@
                 FirstName = SelectedProduct.FirstName,
                 LastName= SelectedProduct.LastName,
                 Phone = SelectedProduct.Phone,
-                Quantity = 0
+                Quantity = 0,
+                UserId = SelectedProduct.UserId
 
             };
         }
@@ -122,7 +123,7 @@
 
             OnProductSold.InvokeAsync(productToSell);
             errorMessage = string.Empty;
-            SellProductUseCase.Execute(CashierName, productToSell.ProductId, productToSell.Quantity.Value, productToSell.Points.Value, productToSell.Address, productToSell.City, productToSell.FirstName, productToSell.LastName, productToSell.PostalCode, productToSell.Phone);
+            SellProductUseCase.Execute(CashierName, productToSell.ProductId, productToSell.Quantity.Value, productToSell.Points.Value, productToSell.Address, productToSell.City, productToSell.FirstName, productToSell.LastName, productToSell.PostalCode, productToSell.Phone, productToSell.UserId);
         }
       
         else

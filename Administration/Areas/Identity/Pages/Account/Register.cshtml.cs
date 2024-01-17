@@ -11,6 +11,8 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading;
 using System.Threading.Tasks;
+using Administration.Services;
+using CoreBusiness;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -18,7 +20,10 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Plugins.DataStore.SQL;
+using UseCases;
 
 namespace Administration.Areas.Identity.Pages.Account
 {
@@ -30,13 +35,17 @@ namespace Administration.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<IdentityUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly PointsService _pointsService;
+        private readonly MarketContext _marketContext;
 
         public RegisterModel(
             UserManager<IdentityUser> userManager,
             IUserStore<IdentityUser> userStore,
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            PointsService pointsService,
+            MarketContext marketContext)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -44,6 +53,8 @@ namespace Administration.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _pointsService = pointsService;
+            _marketContext = marketContext;
         }
 
         /// <summary>
@@ -101,7 +112,8 @@ namespace Administration.Areas.Identity.Pages.Account
             
             [Display(Name = "Recommender ID")]
             public string RecommenderId { get; set; }
-        }
+            
+             }
 
 
         public async Task OnGetAsync(string returnUrl = null)
@@ -126,6 +138,25 @@ namespace Administration.Areas.Identity.Pages.Account
 
                 if (result.Succeeded)
                 {
+                    if (!string.IsNullOrEmpty(Input.RecommenderId))
+                    {
+                    var transaction = new Transaction();
+                    
+                       
+                   
+
+                    // Trigger the event
+                    var transactionCreatedEvent = new TransactionCreatedEvent
+                    {
+                        RecommenderId = user.RecommenderId,
+                        PointsToAdd = transaction.PersonalPoints,
+                    };
+                   await _pointsService.OnTransactionCreated(transactionCreatedEvent);
+
+                    user.RegistrationTime = DateTime.UtcNow;
+                    await _userManager.UpdateAsync(user);
+                    
+                    }
                     await _userManager.AddClaimAsync(user, new Claim("Position", "Cashier"));
                     _logger.LogInformation("User created a new account with password.");
 
@@ -145,6 +176,7 @@ namespace Administration.Areas.Identity.Pages.Account
                     {
                         return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
                     }
+                     
                     else
                     {
                         await _signInManager.SignInAsync(user, isPersistent: false);

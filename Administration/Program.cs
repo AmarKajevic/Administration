@@ -15,6 +15,8 @@ using Microsoft.AspNetCore.Identity;
 using System.Configuration;
 using Microsoft.Extensions.Options;
 using UseCases.Transactions;
+using Administration.Services;
+using Administration;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -32,6 +34,7 @@ builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
 
 
 
+
 builder.Configuration.AddJsonFile("appsettings.json");
 
 
@@ -43,6 +46,7 @@ builder.Services.AddDbContext<AccountContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<AccountContext>();
 builder.Services.AddAuthorization(options =>
@@ -67,6 +71,10 @@ builder.Services.AddTransient<ISellProductUseCase, SellProductUseCase>();
 builder.Services.AddTransient<IRecordTransactionUseCase, RecordTransactionUseCase>();
 builder.Services.AddTransient<IGetTodayTransactionUseCase, GetTodayTransactionUseCase>();
 builder.Services.AddTransient<IGetTransactionsUseCase, GetTransactionsUseCase>();
+builder.Services.AddScoped<PointsService>();
+
+
+
 
 
 var app = builder.Build();

@@ -19,12 +19,12 @@ namespace UseCases.ProductUseCases
             _recordTransactionUseCase = recordTransactionUseCase;
         }
         public void Execute(string cashierName,int productId, int qtyToSell, int pts, string firstName, string lastName, string address, string city,
-    string postalCode, string phone)
+    string postalCode, string phone, string UserId)
         {
             var product = _productRepository.GetProductById(productId);
             if (product == null) return;
             _recordTransactionUseCase.Execute(cashierName, productId, qtyToSell, pts, firstName, lastName, address,
-        city, postalCode, phone);
+        city, postalCode, phone, UserId);
             product.Quantity -= qtyToSell;
             _productRepository.UpdateProduct(product);
             
