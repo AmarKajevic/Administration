@@ -1,18 +1,31 @@
-﻿@inject UseCases.UseCaseInterfaces.IGetTodayTransactionUseCase GetTodayTransactionUseCase
+﻿@using Microsoft.AspNetCore.Identity;
+@using System.Security.Claims
 
-@if (transactions != null)
+
+@inject UseCases.UseCaseInterfaces.IGetTodayTransactionUseCase GetTodayTransactionUseCase
+@inject Administration.Data.AccountContext  _accountContext
+@inject AuthenticationStateProvider authenticationStateProvider
+@inject Administration.ApplicationUser appliactionUser
+@inject Administration.Services.PointsService pointsService
+
+
+
+@if (transactions != null && appliactionUser != null)
+
 {
 
     <table class="table table-dark table-striped">
         <thead>
             <tr>
                 <th>Cashier Name</th>
+                 <th></th>
                 <th>Product Name</th>
                 <th>Date Time</th>
                 <th>Qty Sold</th>
-                <th>Address</th>
+                <th></th>
                 <th>Personal Points</th>
-                <th>General Points</th>
+
+               
                 <th>Sold Amt</th>
             </tr>
         </thead>
@@ -21,12 +34,14 @@
             {
                 <tr>
                     <td>@tran.CashierName</td>
+                    <td></td>
                     <td>@tran.ProductName</td>
                     <td>@tran.TimeStamp.ToString("MM/dd hh:mm")</td>
                     <td>@tran.SoldQty</td>
-                    <td>@tran.Address</td>
+                    
                     <td>@(tran.Points * tran.SoldQty)</td>
-                    <td>@(tran.Points * tran.SoldQty)</td>
+  
+                    <td></td> 
                     <td>@(string.Format("€{0}", tran.SoldQty * tran.Price))</td>
 
                 </tr>
@@ -39,7 +54,7 @@
                 </td>
                 <td style="text-align:right">
                     <b>
-                        @(@transactions.Sum(x => x.PersonalPoints * x.SoldQty))
+                        @(@transactions.Sum(x => x.PersonalPoints * x.SoldQty  ))
                     </b>
 
                 </td>
@@ -48,7 +63,8 @@
                 </td>
                 <td style="text-align:right">
                     <b>
-                        @(@transactions.Sum(x => x.GeneralPoints  + x.PersonalPoints * x.SoldQty))
+                        
+                         @(transactions != null && user != null ? transactions.Sum(x => x.PersonalPoints * x.SoldQty) + user.Points : 0)
                     </b>
 
                 </td>
@@ -69,6 +85,14 @@
 
 
 @code {
+    private ApplicationUser user;
+       protected override async Task OnInitializedAsync()
+    {
+        var authState = await authenticationStateProvider.GetAuthenticationStateAsync();
+        var userId = authState.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        user = await _accountContext.Users.FindAsync(userId);
+    }
+
     private IEnumerable<Transaction> transactions;
 
     public void LoadTransactions(string cashierName)
@@ -76,4 +100,17 @@
         transactions = GetTodayTransactionUseCase.Execute(cashierName);
         StateHasChanged();
     }
+    public async Task AddPointsAfterTransaction(string userId, int pointsToAdd)
+    {
+        var user = await _accountContext.Users.FindAsync(userId);
+        if (user != null)
+        {
+            user.Points += pointsToAdd;
+            _accountContext.Users.Update(user);
+            await _accountContext.SaveChangesAsync();
+        }
+    }
+    
+
+    
 }

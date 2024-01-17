@@ -72,6 +72,7 @@ builder.Services.AddTransient<IRecordTransactionUseCase, RecordTransactionUseCas
 builder.Services.AddTransient<IGetTodayTransactionUseCase, GetTodayTransactionUseCase>();
 builder.Services.AddTransient<IGetTransactionsUseCase, GetTransactionsUseCase>();
 builder.Services.AddScoped<PointsService>();
+builder.Services.AddScoped<ApplicationUser>();
 
 
 
