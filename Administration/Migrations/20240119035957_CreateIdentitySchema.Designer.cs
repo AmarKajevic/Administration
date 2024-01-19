@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Administration.Migrations
 {
     [DbContext(typeof(AccountContext))]
-    [Migration("20240117010833_AddRegistrationTime")]
-    partial class AddRegistrationTime
+    [Migration("20240119035957_CreateIdentitySchema")]
+    partial class CreateIdentitySchema
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -238,6 +238,12 @@ namespace Administration.Migrations
             modelBuilder.Entity("Administration.ApplicationUser", b =>
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Points")
                         .HasColumnType("int");

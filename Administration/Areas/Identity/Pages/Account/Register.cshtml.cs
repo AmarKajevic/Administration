@@ -90,6 +90,14 @@ namespace Administration.Areas.Identity.Pages.Account
             [EmailAddress]
             [Display(Name = "Email")]
             public string Email { get; set; }
+            [Required]
+    
+            [Display(Name = "First Name")]
+            public string FirstName { get; set; }
+            [Required]
+       
+            [Display(Name = "Last Name")]
+            public string LastName { get; set; }
 
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -98,7 +106,7 @@ namespace Administration.Areas.Identity.Pages.Account
             [Required]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
             [DataType(DataType.Password)]
-            [Display(Name = "Password")]
+            [Display(Name = "Paswword")]
             public string Password { get; set; }
 
             /// <summary>
@@ -106,7 +114,7 @@ namespace Administration.Areas.Identity.Pages.Account
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
             [DataType(DataType.Password)]
-            [Display(Name = "Confirm password")]
+            [Display(Name = "Confirm Password ")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
             
@@ -128,7 +136,7 @@ namespace Administration.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email, RecommenderId = Input.RecommenderId };
+                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email, RecommenderId = Input.RecommenderId, FirstName=Input.FirstName, LastName=Input.LastName };
                 
 
                 // await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);

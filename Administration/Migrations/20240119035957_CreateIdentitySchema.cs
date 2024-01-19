@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Administration.Migrations
 {
     /// <inheritdoc />
-    public partial class AddRecommenderId : Migration
+    public partial class CreateIdentitySchema : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -33,6 +33,9 @@ namespace Administration.Migrations
                     Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     RecommenderId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Points = table.Column<int>(type: "int", nullable: true),
+                    RegistrationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),

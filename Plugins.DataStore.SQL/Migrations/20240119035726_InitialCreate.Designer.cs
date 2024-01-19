@@ -12,8 +12,8 @@ using Plugins.DataStore.SQL;
 namespace Plugins.DataStore.SQL.Migrations
 {
     [DbContext(typeof(MarketContext))]
-    [Migration("20240114133833_Init")]
-    partial class Init
+    [Migration("20240119035726_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -111,6 +111,9 @@ namespace Plugins.DataStore.SQL.Migrations
                     b.Property<int?>("Quantity")
                         .IsRequired()
                         .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ProductId");
 
@@ -215,7 +218,12 @@ namespace Plugins.DataStore.SQL.Migrations
                     b.Property<DateTime>("TimeStamp")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("TransactionId");
+
+                    b.HasIndex("ProductId");
 
                     b.ToTable("Transactions");
                 });
@@ -229,6 +237,17 @@ namespace Plugins.DataStore.SQL.Migrations
                         .IsRequired();
 
                     b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("CoreBusiness.Transaction", b =>
+                {
+                    b.HasOne("CoreBusiness.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("CoreBusiness.Category", b =>
