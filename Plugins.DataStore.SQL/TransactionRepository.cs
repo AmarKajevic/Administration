@@ -76,6 +76,10 @@ namespace Plugins.DataStore.SQL
             _db.Transactions.Remove(transaction);
             _db.SaveChanges();
         }
+        public Transaction GetTransactionById(int transactionId)
+    {
+          return _db.Transactions.Find(transactionId);
+    }
          
 
         public void Save(string cashierName, int productId, string productName,

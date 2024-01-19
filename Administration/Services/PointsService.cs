@@ -65,6 +65,20 @@ namespace Administration.Services
             await _accountContext.SaveChangesAsync();
         }
     }
+    public async Task RemovePointsAfterTransaction(string userId, int pointsToRemove)
+{
+    var user = await _accountContext.Users.FindAsync(userId);
+    if (user != null)
+    {
+        user.Points -= pointsToRemove;
+         if (user.Points < 0)
+        {
+            user.Points = 0;
+        }
+        _accountContext.Users.Update(user);
+        await _accountContext.SaveChangesAsync();
+    }
+}
     
     
   }

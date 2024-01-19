@@ -13,6 +13,7 @@ namespace UseCases.DataStorePluginInterfaces
         public IEnumerable<Transaction> GetByDay(string cashierName, DateTime date);
         public IEnumerable<Transaction> Search(string cashierName, DateTime startdate, DateTime dateTime);
         public void DeleteTransaction(int transactionId);
+        public Transaction  GetTransactionById(int transactionId);
         
       
 

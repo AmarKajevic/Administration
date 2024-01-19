@@ -17,6 +17,7 @@ using Microsoft.Extensions.Options;
 using UseCases.Transactions;
 using Administration.Services;
 using Administration;
+using StackExchange.Redis;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -55,7 +56,10 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("CashierOnly", p => p.RequireClaim( "Position", "Cashier"));
 });
 
-
+builder.Services.AddSingleton<IConnectionMultiplexer>(c => {
+    var options = ConfigurationOptions.Parse(builder.Configuration.GetConnectionString("Redis"));
+    return ConnectionMultiplexer.Connect(options);
+});
 builder.Services.AddTransient<IViewCategoriesUseCase, ViewCategoriesUseCase>();
 builder.Services.AddTransient<IAddCategoryUseCase, AddCategoryUseCase>();
 builder.Services.AddTransient<IEditCategoryUseCase, EditCategoryUseCase>();

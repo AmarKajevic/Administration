@@ -26,6 +26,7 @@ namespace CoreBusiness
         public int SoldQty { get; set; }
         public string CashierName { get; set; }
         public string?UserId { get; set; }
+        public Product? Product { get; set; }
         
     }
 }

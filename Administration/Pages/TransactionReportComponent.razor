@@ -1,9 +1,17 @@
 ﻿@page "/transactions"
 @attribute [Authorize(Policy = "AdminOnly")]
+@using System.Security.Claims
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Identity;
+@using Microsoft.EntityFrameworkCore;
 
 @inject IJSRuntime JSRuntime
 @inject UseCases.UseCaseInterfaces.IGetTransactionsUseCase GetTransactionsUseCase
 @inject UseCases.DataStorePluginInterfaces.ITransactionRepository TransactionRepository
+@inject Administration.Services.PointsService pointsService
+@inject AuthenticationStateProvider authenticationStateProvider
+@inject Plugins.DataStore.SQL.MarketContext _marketContext
+@inject Administration.Data.AccountContext  _accountContext
 
 <div class="row">
     <div class="col-2">
@@ -70,7 +78,7 @@
                     <td>@tran.GeneralPoints</td>
                     <td style="text-align:right">@(string.Format("{0:c}", tran.Price))</td>
                     <td style="text-align:right">@(string.Format("{0:c}", tran.SoldQty * tran.Price))</td>
-                        <td>  <button type="button" class="btn btn-link" @onclick="@(() => DeleteTransaction(@tran.TransactionId))">Delete</button></td>
+                        <td>  <button type="button" class="btn btn-link" @onclick="@(() => DeleteTransaction(@tran.TransactionId ))">Delete</button></td>
 
                 </tr>
             }
@@ -111,6 +119,7 @@
 
         </tfoot>
     </table>
+    
     </div>
 }
 
@@ -120,6 +129,9 @@
     private DateTime startDate;
     private DateTime endDate;
     private IEnumerable<Transaction> transactions;
+    private TodayTransactionsComponent transactionComponent;
+    private AuthenticationState authState;
+        
     protected override void OnInitialized()
     {
         base.OnInitialized();
@@ -139,14 +151,41 @@
         JSRuntime.InvokeVoidAsync("print");
 
     }
-    private void DeleteTransaction(int transactionId)
+   
+    @* private  void DeleteTransaction(int transactionId)
+{
+
+   
+
+    TransactionRepository.DeleteTransaction(transactionId);
+    LoadTransactions();
+} *@
+
+
+private async Task DeleteTransaction(int transactionId)
+{
+    var transaction = await _marketContext.Transactions.FindAsync(transactionId);
+    if (transaction != null)
     {
-        
-        TransactionRepository.DeleteTransaction(transactionId);
-
-        
-        LoadTransactions();
+        var userId = transaction.UserId;
+        await DeletePointsToRecommenders(userId, transaction.Points);
+        _marketContext.Transactions.Remove(transaction);
+        await _marketContext.SaveChangesAsync();
     }
+}
 
+private async Task DeletePointsToRecommenders(string recommenderId, int pointsToAdd)
+{
+    var recommender = await _accountContext.Users.FindAsync(recommenderId);
+    if (recommender != null)
+    {
+        await pointsService.RemovePointsAfterTransaction(recommenderId, pointsToAdd);
+         if (!string.IsNullOrEmpty(recommender.RecommenderId))
+            {
+                await DeletePointsToRecommenders(recommender.RecommenderId, pointsToAdd);
+            }
+    }
+}
+   
 
 }
