@@ -12,7 +12,7 @@ using Plugins.DataStore.SQL;
 namespace Plugins.DataStore.SQL.Migrations
 {
     [DbContext(typeof(MarketContext))]
-    [Migration("20240119035726_InitialCreate")]
+    [Migration("20240121023651_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -49,20 +49,8 @@ namespace Plugins.DataStore.SQL.Migrations
                         new
                         {
                             CategoryId = 1,
-                            Description = "Beverage",
-                            Name = "Beverage"
-                        },
-                        new
-                        {
-                            CategoryId = 2,
-                            Description = "Bakery",
-                            Name = "Bakery"
-                        },
-                        new
-                        {
-                            CategoryId = 3,
-                            Description = "Meat",
-                            Name = "Meat"
+                            Description = "Kreme",
+                            Name = "Krema"
                         });
                 });
 
@@ -126,37 +114,19 @@ namespace Plugins.DataStore.SQL.Migrations
                         {
                             ProductId = 1,
                             CategoryId = 1,
-                            Name = "Iced Tea",
+                            Name = "BioBalance krema",
                             Points = 20,
-                            Price = 1.99,
-                            Quantity = 100
+                            Price = 15.0,
+                            Quantity = 10000
                         },
                         new
                         {
                             ProductId = 2,
                             CategoryId = 1,
-                            Name = "Canada Dry",
+                            Name = "BioBalance krema 1+1",
                             Points = 30,
-                            Price = 2.9900000000000002,
-                            Quantity = 200
-                        },
-                        new
-                        {
-                            ProductId = 3,
-                            CategoryId = 3,
-                            Name = "Steak",
-                            Points = 30,
-                            Price = 10.99,
-                            Quantity = 100
-                        },
-                        new
-                        {
-                            ProductId = 4,
-                            CategoryId = 2,
-                            Name = "White Bread",
-                            Points = 20,
-                            Price = 0.98999999999999999,
-                            Quantity = 300
+                            Price = 25.5,
+                            Quantity = 10000
                         });
                 });
 

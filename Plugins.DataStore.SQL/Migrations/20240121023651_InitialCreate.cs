@@ -95,22 +95,15 @@ namespace Plugins.DataStore.SQL.Migrations
             migrationBuilder.InsertData(
                 table: "Categories",
                 columns: new[] { "CategoryId", "Description", "Name" },
-                values: new object[,]
-                {
-                    { 1, "Beverage", "Beverage" },
-                    { 2, "Bakery", "Bakery" },
-                    { 3, "Meat", "Meat" }
-                });
+                values: new object[] { 1, "Kreme", "Krema" });
 
             migrationBuilder.InsertData(
                 table: "Products",
                 columns: new[] { "ProductId", "Address", "CategoryId", "City", "FirstName", "LastName", "Name", "Phone", "Points", "PostalCode", "Price", "Quantity", "UserId" },
                 values: new object[,]
                 {
-                    { 1, null, 1, null, null, null, "Iced Tea", null, 20, null, 1.99, 100, null },
-                    { 2, null, 1, null, null, null, "Canada Dry", null, 30, null, 2.9900000000000002, 200, null },
-                    { 3, null, 3, null, null, null, "Steak", null, 30, null, 10.99, 100, null },
-                    { 4, null, 2, null, null, null, "White Bread", null, 20, null, 0.98999999999999999, 300, null }
+                    { 1, null, 1, null, null, null, "BioBalance krema", null, 20, null, 15.0, 10000, null },
+                    { 2, null, 1, null, null, null, "BioBalance krema 1+1", null, 30, null, 25.5, 10000, null }
                 });
 
             migrationBuilder.CreateIndex(

@@ -54,7 +54,7 @@
                 <th>Phone number</th>
                 <th>Qty Sold</th>
                 <th>Personal Points</th>
-                <th>General Points</th>
+                <th>User Points</th>
                 <th>Price</th>
                 <th>Sold Amt</th>
                 <th></th>
@@ -75,7 +75,7 @@
                     <td>@tran.Phone</td>
                     <td>@tran.SoldQty</td>
                     <td>@tran.PersonalPoints</td>
-                    <td>@tran.GeneralPoints</td>
+                    <td>@userPoints[tran.CashierName]</td>
                     <td style="text-align:right">@(string.Format("{0:c}", tran.Price))</td>
                     <td style="text-align:right">@(string.Format("{0:c}", tran.SoldQty * tran.Price))</td>
                         <td>  <button type="button" class="btn btn-link" @onclick="@(() => DeleteTransaction(@tran.TransactionId ))">Delete</button></td>
@@ -83,7 +83,7 @@
                 </tr>
             }
             <tr>
-                <td colspan="9">&nbsp;</td>
+                <td colspan="11">&nbsp;</td>
                
                     <td style="text-align:right">
                         <b> total Personal Points:</b>
@@ -94,15 +94,7 @@
                         </b>
 
                     </td>
-                    <td style="text-align:right">
-                        <b> Total General Points:</b>
-                    </td>
-                    <td style="text-align:right">
-                        <b>
-                            @( @transactions.Sum(x => x.GeneralPoints + x.PersonalPoints))
-                        </b>
-
-                    </td>
+                    
                     <td style="text-align:right">
                         <b> Grand Total:</b>
                     </td>
@@ -131,13 +123,18 @@
     private IEnumerable<Transaction> transactions;
     private TodayTransactionsComponent transactionComponent;
     private AuthenticationState authState;
+    private Dictionary<string, int> userPoints;
         
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
         base.OnInitialized();
 
         startDate = DateTime.Today;
         endDate = new DateTime(startDate.Year, startDate.Month, 1).AddMonths(1);
+        var users = await _accountContext.Users.AsNoTracking().ToListAsync();
+
+    // Napravite rečnik gde je ključ ime korisnika, a vrednost su njegovi poeni
+    userPoints = users.ToDictionary(u => u.UserName, u => u.Points);
     }
 
     private void LoadTransactions()
@@ -170,7 +167,9 @@ private async Task DeleteTransaction(int transactionId)
         var userId = transaction.UserId;
         await DeletePointsToRecommenders(userId, transaction.Points);
         _marketContext.Transactions.Remove(transaction);
+        TransactionRepository.DeleteTransaction(transactionId);
         await _marketContext.SaveChangesAsync();
+        
     }
 }
 
@@ -185,6 +184,11 @@ private async Task DeletePointsToRecommenders(string recommenderId, int pointsTo
                 await DeletePointsToRecommenders(recommender.RecommenderId, pointsToAdd);
             }
     }
+}
+private async Task<int> GetUserPointsAsync(string username)
+{
+    var user = await _accountContext.Users.AsNoTracking().FirstOrDefaultAsync(u => u.UserName == username);
+    return user?.Points ?? 0;
 }
    
 

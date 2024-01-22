@@ -28,23 +28,14 @@ namespace Plugins.DataStore.SQL
 
         public IEnumerable<Transaction> GetByDay(string cashierName, DateTime date)
         {
-            if (string.IsNullOrEmpty(cashierName))
+             if (string.IsNullOrEmpty(cashierName))
             {
-                
-                if (date.Day == 1)
-                {
-                    DeleteTransactionsOnFirstDayOfMonth();
-                }
-
                 return _db.Transactions.Where(x => x.TimeStamp.Date == date.Date);
             }
             else
             {
                 
-                if (date.Day == 1)
-                {
-                    DeleteTransactionsOnFirstDayOfMonth();
-                }
+            
 
                 return _db.Transactions.Where(x =>
                     EF.Functions.Like(x.CashierName, $"%{cashierName}%") &&
@@ -53,20 +44,7 @@ namespace Plugins.DataStore.SQL
         }
 
 
-        private void DeleteTransactionsOnFirstDayOfMonth()
-        {
-            
-            var currentDate = DateTime.Now;
-            var firstDayOfPreviousMonth = currentDate.AddMonths(-1).Date;
-            var lastDayOfPreviousMonth = new DateTime(currentDate.Year, currentDate.Month, 1).AddDays(-1).Date;
-
-            var transactionsToDelete = _db.Transactions
-                .Where(x => x.TimeStamp.Date >= firstDayOfPreviousMonth && x.TimeStamp.Date <= lastDayOfPreviousMonth)
-                .ToList();
-
-            _db.Transactions.RemoveRange(transactionsToDelete);
-            _db.SaveChanges();
-        }
+       
 
 
         public void DeleteTransaction(int transactionId)
@@ -117,12 +95,12 @@ namespace Plugins.DataStore.SQL
         public IEnumerable<Transaction> Search(string cashierName, DateTime startdate, DateTime endDate)
         {
             if (string.IsNullOrEmpty(cashierName))
-                return _db.Transactions.Where(x => x.TimeStamp >= startdate.Date && x.TimeStamp <= endDate.Date.AddDays(1).Date);
+                return _db.Transactions.Where(x => x.TimeStamp >= startdate.Date && x.TimeStamp <= endDate.Date);
             else
             {
                 return _db.Transactions.Where(x =>
                 EF.Functions.Like(x.CashierName,$"%{cashierName}%") &&
-               x.TimeStamp >= startdate.Date && x.TimeStamp <= endDate.Date.AddDays(1).Date);
+               x.TimeStamp >= startdate.Date && x.TimeStamp <= endDate.Date);
             }
         }
     }
