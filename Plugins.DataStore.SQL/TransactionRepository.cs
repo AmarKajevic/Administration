@@ -95,14 +95,15 @@ namespace Plugins.DataStore.SQL
         public IEnumerable<Transaction> Search(string cashierName, DateTime startdate, DateTime endDate)
         {
             if (string.IsNullOrEmpty(cashierName))
-                return _db.Transactions.Where(x => x.TimeStamp >= startdate.Date && x.TimeStamp <= endDate.Date);
+            {
+                return _db.Transactions;
+            }
             else
             {
-                return _db.Transactions.Where(x =>
-                EF.Functions.Like(x.CashierName,$"%{cashierName}%") &&
-               x.TimeStamp >= startdate.Date && x.TimeStamp <= endDate.Date);
+                return _db.Transactions
+                    .Where(x => EF.Functions.Like(x.CashierName, $"%{cashierName}%"));
             }
         }
     }
-      
 }
+    
