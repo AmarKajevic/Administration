@@ -2,7 +2,7 @@
 @inject UseCases.UseCaseInterfaces.IViewProductsByCategoryId ViewProductsByCategoryId
 
 <div class="form-group">
-    <label for="category">Category</label>
+    <label for="category">Kategorija</label>
     <select id="category" @bind="SelectedCategoryId" class="form-select">
         <option selected></option>
         @foreach (var cat in categories)
@@ -16,9 +16,9 @@
     <table class="table table-dark table-striped">
         <thead>
             <tr>
-                <th>Prod Name</th>
-                <th>Qty Left</th>
-                <th>Points</th>
+                <th>Produkt</th>
+                <th>Preostala kolicina</th>
+                <th>Bodovi</th>
 
             </tr>
 

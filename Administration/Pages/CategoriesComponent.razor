@@ -6,14 +6,14 @@
 @inject UseCases.UseCaseInterfaces.IViewCategoriesUseCase ViewCategoryUseCase
 @inject UseCases.UseCaseInterfaces.IDeleteCategoryUseCase DeleteCategoryUseCase
 
-<h3> Manage Categories</h3>
+<h3> Upravljaj Kategorijama</h3>
 @if(categories != null)
 {
     <table class="table table-dark table-striped">
             <thead>
                 <tr>
-                    <th>Name</th>
-                    <th>Description</th>
+                    <th>Ime Kategorije</th>
+                    <th>Opis</th>
                     <th></th>
                 </tr>
             </thead>
@@ -24,8 +24,8 @@
                         <td>@category.Name</td>
                         <td>@category.Description</td>
                         <td>
-                            <button type="button" @onclick ="@(() => EditCategory(category))" class="btn btn-link">Edit</button>
-                            <button type="button" @onclick="@(() => DeleteCategory(category.CategoryId))" class="btn btn-link">Delete</button>
+                            <button type="button" @onclick ="@(() => EditCategory(category))" class="btn btn-link">Izmeni</button>
+                            <button type="button" @onclick="@(() => DeleteCategory(category.CategoryId))" class="btn btn-link">Izbrisi</button>
 
                         </td>
                     </tr>

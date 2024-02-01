@@ -13,47 +13,47 @@
 
   
         <div class="form-group">
-            <label for="name">Product Name</label>
+            <label for="name">Produkt</label>
             <input class="form-control" readonly value="@productToSell.Name" />
         </div>
         <div class="form-group">
-            <label for="price">Price</label>
+            <label for="price">Cena</label>
             <input class ="form-control" id="price" type="text" readonly value="@(string.Format("{0:c}", productToSell.Price))" />
         </div>
         <div class="form-group">
-            <label for="qty">Quantity</label>
+            <label for="qty">Kolicina</label>
             <InputNumber id="qty" @bind-Value="@productToSell.Quantity" class="form-control" disabled></InputNumber>
         </div>
         <div class="form-group">
-            <label for="f-name">First Name</label>
+            <label for="f-name">Ime</label>
             <input type="text" id="f-name" @bind="productToSell.FirstName" class="form-control" />
         </div>
 
         <div class="form-group">
-            <label for="l-name">Last Name</label>
+            <label for="l-name">Prezime</label>
             <input type="text" id="l-name" @bind="productToSell.LastName" class="form-control" />
         </div>
         <div class="form-group">
-            <label for="address">Address</label>
+            <label for="address">Adresa</label>
             <input type="text" id="address" @bind="productToSell.Address" class="form-control" />
         </div>
         <div class="form-group">
-            <label for="city">City</label>
+            <label for="city">Grad</label>
             <input type="text" id="city" @bind="productToSell.City" class="form-control" />
         </div>
         <div class="form-group">
-            <label for="postalCode">Postal code</label>
+            <label for="postalCode">Postanski broj</label>
             <input type="text" id="postalCode" @bind="@productToSell.PostalCode" class="form-control"></input>
         </div>
         <div class="form-group">
-            <label for="phone">Phone number</label>
+            <label for="phone">mobilni broj</label>
             <input type="text" id="phone" @bind="@productToSell.Phone" class="form-control"></input>
         </div>
        
         
 
         <br/>
-        <button type="submit" class="btn btn-primary">Sell</button>
+        <button type="submit" class="btn btn-primary">Prodaj</button>
 
 
 

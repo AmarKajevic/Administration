@@ -3,13 +3,13 @@
 
 <AuthorizeView>
     <Authorized>
-        <a class="py-2 d-none d-md-inline-block" href="Identity/Account/Manage">Hello, @context.User.Identity.Name!</a>
+        <a class="py-2 d-none d-md-inline-block" href="Identity/Account/Manage">Cao, @context.User.Identity.Name!</a>
         <form class="py-2 d-none d-md-inline-block" action="/Identity/Account/Logout?returnUrl=%2F" method="post">
-            <button type="submit" class="nav-link btn btn-link">Log out</button>
+            <button type="submit" class="nav-link btn btn-link">Odjavi se</button>
         </form>
     </Authorized>
     <NotAuthorized>
-        <a class="py-2 d-none d-md-inline-block" href="Identity/Account/Register">Register</a>
-        <a class="py-2 d-none d-md-inline-block" href="Identity/Account/Login">Log in</a>
+        <a class="py-2 d-none d-md-inline-block" href="Identity/Account/Register">Registracija</a>
+        <a class="py-2 d-none d-md-inline-block" href="Identity/Account/Login">Prijava</a>
     </NotAuthorized>
 </AuthorizeView>

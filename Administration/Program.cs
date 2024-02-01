@@ -18,6 +18,10 @@ using UseCases.Transactions;
 using Administration.Services;
 using Administration;
 using StackExchange.Redis;
+using Administration.Areas.Identity.Data;
+
+
+
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -41,11 +45,11 @@ builder.Configuration.AddJsonFile("appsettings.json");
 
 builder.Services.AddDbContext<MarketContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")) ;
+    options.UseMySql(builder.Configuration.GetConnectionString("DefaultConnection"), new MySqlServerVersion(new Version(8, 0, 26)));
 });
 builder.Services.AddDbContext<AccountContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+    options.UseMySql(builder.Configuration.GetConnectionString("DefaultConnection"), new MySqlServerVersion(new Version(8, 0, 26)));
 });
 
 
@@ -56,10 +60,22 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("CashierOnly", p => p.RequireClaim( "Position", "Cashier"));
 });
 
+builder.Services.AddIdentityCore<IdentityUser>(opt => 
+{
+
+})
+.AddEntityFrameworkStores<AccountContext>()
+.AddSignInManager<SignInManager<IdentityUser>>();
+
 builder.Services.AddSingleton<IConnectionMultiplexer>(c => {
     var options = ConfigurationOptions.Parse(builder.Configuration.GetConnectionString("Redis"));
     return ConnectionMultiplexer.Connect(options);
 });
+
+builder.Services.AddAuthentication();
+builder.Services.AddAuthorization();    
+
+
 builder.Services.AddTransient<IViewCategoriesUseCase, ViewCategoriesUseCase>();
 builder.Services.AddTransient<IAddCategoryUseCase, AddCategoryUseCase>();
 builder.Services.AddTransient<IEditCategoryUseCase, EditCategoryUseCase>();
@@ -105,5 +121,20 @@ app.MapRazorPages();
 
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
+var context = app.Services.GetRequiredService<MarketContext>();
+var IdentityContext = app.Services.GetRequiredService<AccountContext>();
+var userManager = app.Services.GetRequiredService<UserManager<IdentityUser>>();
+var logger = app.Services.GetRequiredService<ILogger<Program>>();
+try
+{
+     await context.Database.MigrateAsync();
+    await IdentityContext.Database.MigrateAsync();
+    await AccountContextSeed.SeedUsersAsync(userManager);
+}
+catch (Exception ex)
+{
+    
+    logger.LogError(ex, "An error occured during migration");
+}
 
 app.Run();

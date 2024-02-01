@@ -162,6 +162,7 @@ namespace Administration.Areas.Identity.Pages.Account
                    await _pointsService.OnTransactionCreated(transactionCreatedEvent);
 
                     user.RegistrationTime = DateTime.UtcNow;
+                    
                     await _userManager.UpdateAsync(user);
                     
                     }

@@ -18,6 +18,20 @@ services:
       - 8081:8081
     depends_on:
       - redis
+  db:
+    image: mcr.microsoft.com/mssql/server
+    environment:
+      SA_PASSWORD: "secret"
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: "Express"
+      MSSQL_USER: "appuser"
+      MSSQL_PASSWORD: "secret"
+      MSSQL_DB: "MarketManagement"
+    ports:
+      - "1433:1433"
+    volumes:
+      - mssql-data:/data     
     
 volumes:
   redis-data:
+  mssql-data:

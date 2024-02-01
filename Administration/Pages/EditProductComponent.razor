@@ -7,7 +7,7 @@
 @inject UseCases.UseCaseInterfaces.IEditProductUseCase EditProductUseCase
 @inject UseCases.UseCaseInterfaces.IViewCategoriesUseCase ViewCategoriesUseCase
 
-<h3>Edit Product</h3>
+<h3>Izmeni Produkt</h3>
 
 @if (product != null)
 {
@@ -16,11 +16,11 @@
         <ValidationSummary></ValidationSummary>
 
         <div class="form-group">
-            <label for="name">Name</label>
+            <label for="name">Ime Produkta</label>
             <InputText id="name" @bind-Value="product.Name" class="form-control"></InputText>
         </div>
         <div class="form-group">
-            <label for="category">Category</label>
+            <label for="category">Kategorija</label>
             <select id="category" @bind="product.CategoryId" class="form-select">
                 <option selected></option>
                 @foreach (var cat in categories)
@@ -30,20 +30,20 @@
             </select>
         </div>
         <div class="form-group">
-            <label for="price">Price</label>
+            <label for="price">Cena</label>
             <InputNumber id="price" @bind-Value="product.Price" @bind-Value:format="F2" class="form-control"></InputNumber>
         </div>
         <div class="form-group">
-            <label for="points">Points</label>
+            <label for="points">Bodovi</label>
             <InputNumber id="points" @bind-Value="product.Points" @bind-Value:format="F2" class="form-control"></InputNumber>
         </div>
         <div class="form-group">
-            <label for="qty">Quantity</label>
+            <label for="qty">Kolicina</label>
             <InputNumber id="qty" @bind-Value="product.Quantity" class="form-control"></InputNumber>
         </div>
         <br />
-        <button type="submit" class="btn btn-primary">Save</button>
-        <button type="button" class="btn btn-primary" @onclick="OnCancel">Cancel</button>
+        <button type="submit" class="btn btn-primary">Sacuvaj</button>
+        <button type="button" class="btn btn-primary" @onclick="OnCancel">Otkazi</button>
     </EditForm>
 }
 

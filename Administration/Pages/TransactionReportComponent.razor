@@ -15,24 +15,24 @@
 
 <div class="row">
     <div class="col-2">
-        <label for="cashier">Username</label>
+        <label for="cashier">Korisnicko ime</label>
         <input type="text" id="cashier" class="form-control" @bind-value="cashierName"/>
     </div>
     <div class="col-3">
-        <label for="startdate">Start Date</label>
+        <label for="startdate">Datum transakcije</label>
         <input type="date" id="startdate" class="form-control" @bind-value="startDate" />
         </div>
     <div class="col-3">
-        <label for="enddate">End Date</label>
+        <label for="enddate">Kraj meseca</label>
         <input type="date" id="enddate" class="form-control" @bind-value="endDate" />
     </div>
     <div class="col-2">
         <label>&nbsp;</label>
-        <button type="button" class="btn btn-primary form-control" @onclick="LoadTransactions">Search</button>
+        <button type="button" class="btn btn-primary form-control" @onclick="LoadTransactions">Pretrazi transakcije</button>
     </div>
     <div class="col-2">
         <label>&nbsp;</label>
-        <button type="button" class="btn btn-primary form-control" @onclick="PrintReport">Print</button>
+        <button type="button" class="btn btn-primary form-control" @onclick="PrintReport">Odstampaj</button>
     </div>
     
 </div>
@@ -43,20 +43,20 @@
         <table class="table table-dark table-striped">
         <thead>
             <tr>
-                <th>Date Time</th>
-                <th>UserName</th>
-                <th>Product Name</th>    
-                <th>First name</th>
-                <th>Last name</th>
-                <th>Address</th>
-                <th>City</th>
-                <th>Postal code</th>
-                <th>Phone number</th>
-                <th>Qty Sold</th>
-                <th>Personal Points</th>
-                <th>User Points</th>
-                <th>Price</th>
-                <th>Sold Amt</th>
+                <th>Vreme transakcije</th>
+                <th>Korisnik</th>
+                <th>Produkt</th>    
+                <th>Ime proucioca</th>
+                <th>prezime proucioca</th>
+                <th>Adresa</th>
+                <th>Grad</th>
+                <th>Postanski broj</th>
+                <th>Mobilni broj</th>
+                <th>Kolicina</th>
+                <th>Licni bodovi</th>
+                <th>Korisnicki bodovi</th>
+                <th>Cena</th>
+                <th>Ukupna cena</th>
                 <th></th>
             </tr>
         </thead>
@@ -76,8 +76,8 @@
                     <td>@tran.SoldQty</td>
                     <td>@tran.PersonalPoints</td>
                     <td>@userPoints[tran.CashierName]</td>
-                    <td style="text-align:right">@(string.Format("{0:c}", tran.Price))</td>
-                    <td style="text-align:right">@(string.Format("{0:c}", tran.SoldQty * tran.Price))</td>
+                    <td style="text-align:right">@(string.Format("€{0}", tran.Price))</td>
+                    <td style="text-align:right">@(string.Format("€{0}", tran.SoldQty * tran.Price))</td>
                         <td>  <button type="button" class="btn btn-link" @onclick="@(() => DeleteTransaction(@tran.TransactionId ))">Delete</button></td>
 
                 </tr>
@@ -86,7 +86,7 @@
                 <td colspan="11">&nbsp;</td>
                
                     <td style="text-align:right">
-                        <b> total Personal Points:</b>
+                        <b> Ukupni Licni Bodovi:</b>
                     </td>
                     <td style="text-align:right">
                         <b>
@@ -96,11 +96,11 @@
                     </td>
                     
                     <td style="text-align:right">
-                        <b> Grand Total:</b>
+                        <b> Ukupno:</b>
                     </td>
                     <td style="text-align:right">
                         <b>
-                            @(string.Format("{0:c}", @transactions.Sum(x => x.Price * x.SoldQty)))
+                            @(string.Format("€{0}", @transactions.Sum(x => x.Price * x.SoldQty)))
                         </b>
 
                     </td>

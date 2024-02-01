@@ -6,7 +6,7 @@
 @inject UseCases.UseCaseInterfaces.IGetCategoryByIdUseCase GetCategoryByIdUseCase
 @inject UseCases.UseCaseInterfaces.IEditCategoryUseCase EditCategoryUseCase
 
-<h3>Edit Category</h3>
+<h3>Izmeni Kategoriju </h3>
 
 @if (category != null)
 {
@@ -14,16 +14,16 @@
         <DataAnnotationsValidator></DataAnnotationsValidator>
         <ValidationSummary></ValidationSummary>
         <div class="form-group">
-            <label for="name">Name</label>
+            <label for="name">Ime Kategorije</label>
             <InputText id="name" @bind-Value="category.Name" class="form-control"></InputText>
         </div>
         <div class="form-group">
-            <label for="description">Description</label>
+            <label for="description">Opis</label>
             <InputText id="description" @bind-Value="category.Description" class="form-control"></InputText>
         </div>
         <br/>
-        <button type="submit" class="btn btn-primary">Save</button>
-        <button type="button" class="btn btn-primary" @onclick="OnCancel">Cancel</button>
+        <button type="submit" class="btn btn-primary">Sacuvaj</button>
+        <button type="button" class="btn btn-primary" @onclick="OnCancel">Otkazi</button>
     </EditForm>
 }
 
